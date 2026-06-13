@@ -23,6 +23,19 @@ const isConnectionClosedError = (error) => {
 };
 
 const canSend = (conn) => !conn?.isChild || (conn.status === 'open' && conn.ws?.isOpen);
+const isUsageError = (error) => typeof error === 'string' || error?.isUsage || error?.name === 'UsageError';
+const usageText = (error) => typeof error === 'string' ? error : error?.message || String(error || '');
+
+async function handlePluginError(conn, m, error, extra = {}) {
+  if (isUsageError(error)) {
+    if (canSend(conn)) await m.reply(usageText(error));
+    return false;
+  }
+
+  console.error(chalk.red(extra.label || '[Plugin Error]'), error);
+  if (!(conn.isChild && isConnectionClosedError(error))) await reportPluginError(conn, m, error, extra);
+  return true;
+}
 
 const ownerJids = () => (global.owner || [])
   .map((owner) => Array.isArray(owner) ? owner[0] : owner)
@@ -206,14 +219,14 @@ async function handleMessage(chatUpdate) {
       /* run .all() – event hooks */
       if (typeof plugin.all === 'function') {
         try { await plugin.all.call(this, m, chatUpdate); } catch (e) {
-          console.error(e);
-          if (!(this.isChild && isConnectionClosedError(e))) await reportPluginError(this, m, e, { plugin: name + '.all' });
+          await handlePluginError(this, m, e, { plugin: name + '.all', label: '[Plugin All Error]' });
         }
       }
 
       const str2Regex = (str) => str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
-      const _prefix = plugin.customPrefix
-        ? plugin.customPrefix
+      const customPrefix = plugin.customPrefix ?? plugin.costumPrefix;
+      const _prefix = customPrefix
+        ? customPrefix
         : this.prefix
         ? this.prefix
         : global.prefix;
@@ -242,14 +255,14 @@ async function handleMessage(chatUpdate) {
             })
           ) continue;
         } catch (e) {
-          console.error(e);
-          if (!(this.isChild && isConnectionClosedError(e))) await reportPluginError(this, m, e, { plugin: name + '.before' });
+          await handlePluginError(this, m, e, { plugin: name + '.before', label: '[Plugin Before Error]' });
           continue;
         }
       }
 
       if (typeof plugin !== 'function') continue;
       if (!match) continue;
+      if (customPrefix && !match[0]) continue;
 
       const result =
         ((global.opts?.multiprefix ?? true) && (match[0] || '')[0]) ||
@@ -270,7 +283,7 @@ async function handleMessage(chatUpdate) {
       command     = (command || '').toLowerCase();
       const fail  = plugin.fail || global.dfail;
 
-      const prefixCommand = !result ? plugin.customPrefix || plugin.command : plugin.command;
+      const prefixCommand = plugin.command;
       const isAccept =
         (prefixCommand instanceof RegExp && prefixCommand.test(command)) ||
         (Array.isArray(prefixCommand) && prefixCommand.some((c) =>
@@ -280,6 +293,7 @@ async function handleMessage(chatUpdate) {
 
       m.prefix   = !!result;
       usedPrefix = !result ? '' : result;
+      m.usedPrefix = usedPrefix;
       if (!isAccept) continue;
 
       m.plugin     = name;
@@ -349,25 +363,30 @@ async function handleMessage(chatUpdate) {
         s.success     = (s.success || 0) + 1;
         s.lastSuccess = now;
       } catch (e) {
-        m.error = e;
-        console.error(chalk.red('[Plugin Error]'), e);
-        if (!(this.isChild && isConnectionClosedError(e))) {
-          await reportPluginError(this, m, e, {
-            plugin: m.plugin,
-            command,
-            commandText: usedPrefix + command,
-          });
+        const reported = await handlePluginError(this, m, e, {
+          plugin: m.plugin,
+          command,
+          commandText: usedPrefix + command,
+          label: '[Plugin Error]',
+        });
+        if (reported) {
+          m.error = e;
           if (canSend(this)) await m.reply('*[ Sistem ]* Terjadi error pada bot!');
         }
       } finally {
         if (typeof plugin.after === 'function') {
-          try { await plugin.after.call(this, m, extra); } catch (e) { console.error(e); }
+          try { await plugin.after.call(this, m, extra); } catch (e) {
+            await handlePluginError(this, m, e, { plugin: name + '.after', label: '[Plugin After Error]' });
+          }
         }
       }
       break;
     }
   } catch (e) {
     console.error(chalk.red('[Handler Error]'), e);
+    if (m && !(this.isChild && isConnectionClosedError(e))) {
+      await reportPluginError(this, m, e, { plugin: 'handler', commandText: m.text || '-' });
+    }
   } finally {
     /* Exp & limit update */
     if (m) {

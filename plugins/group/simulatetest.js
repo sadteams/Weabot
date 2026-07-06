@@ -66,4 +66,6 @@ handler.command = /^(simulatetest|simtest|simwelcome)$/i;
 handler.group = true;
 handler.admin = true;
 
+handler.description = "Melakukan simulasi pesan welcome/goodbye untuk menguji konfigurasi grup.";
+
 export default handler;

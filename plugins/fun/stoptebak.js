@@ -8,4 +8,8 @@ const handler = async (m) => {
 handler.help    = ['stoptebak'];
 handler.tags    = ['game'];
 handler.command = /^(stoptebak|stopgame)$/i;
+handler.description = "Menghentikan sesi permainan tebak kata atau game aktif di chat.";
+
+handler.disabled = true;
+
 export default handler;

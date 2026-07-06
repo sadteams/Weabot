@@ -11,4 +11,6 @@ handler.tags     = ['group'];
 handler.command  = /^(promote|jadmin|admin)$/i;
 handler.group    = true;
 handler.botAdmin = true;
+handler.description = "Mengangkat member grup menjadi admin melalui mention atau reply.";
+
 export default handler;

@@ -34,4 +34,6 @@ handler.command = /^(welcome|onwelcome)$/i;
 handler.group = true;
 handler.admin = true;
 
+handler.description = "Mengaktifkan atau menonaktifkan fitur welcome dan goodbye di grup.";
+
 export default handler;

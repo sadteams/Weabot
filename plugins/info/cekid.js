@@ -16,4 +16,15 @@ const handler = async (m, { conn }) => {
 handler.help    = ['cekid [@user]'];
 handler.tags    = ['info'];
 handler.command = /^(cekid|id|who)$/i;
+handler.description = "Menampilkan JID, nomor, dan nama user dari diri sendiri, mention, atau pesan yang direply.";
+handler.ai = {
+  tool: true,
+  name: "check_user_id",
+  description: handler.description,
+  permissions: ["user","premium","owner"],
+  risk: "low",
+  parameters: {},
+  examples: ["cek id saya"],
+};
+
 export default handler;

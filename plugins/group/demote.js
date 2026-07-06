@@ -11,4 +11,6 @@ handler.tags     = ['group'];
 handler.command  = /^(demote|deadmin)$/i;
 handler.group    = true;
 handler.botAdmin = true;
+handler.description = "Menurunkan admin grup menjadi member biasa melalui mention atau reply.";
+
 export default handler;

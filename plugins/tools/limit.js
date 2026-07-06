@@ -9,4 +9,15 @@ const handler = async (m) => {
 handler.help    = ['limit'];
 handler.tags    = ['info'];
 handler.command = /^(limit|ceklimit)$/i;
+handler.description = "Menampilkan sisa limit penggunaan fitur untuk user.";
+handler.ai = {
+  tool: true,
+  name: "user_limit",
+  description: handler.description,
+  permissions: ["user","premium","owner"],
+  risk: "low",
+  parameters: {},
+  examples: ["cek limit saya"],
+};
+
 export default handler;

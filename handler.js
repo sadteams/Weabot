@@ -26,6 +26,44 @@ const canSend = (conn) => !conn?.isChild || (conn.status === 'open' && conn.ws?.
 const isUsageError = (error) => typeof error === 'string' || error?.isUsage || error?.name === 'UsageError';
 const usageText = (error) => typeof error === 'string' ? error : error?.message || String(error || '');
 
+const str2Regex = (str) => String(str).replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+const resetRegex = (regex) => {
+  if (regex instanceof RegExp) regex.lastIndex = 0;
+  return regex;
+};
+const resolveCustomPrefix = (plugin = {}) => {
+  if (plugin.customPrefix != null) return plugin.customPrefix;
+  if (plugin.costumPrefix != null) return plugin.costumPrefix;
+  return undefined;
+};
+const execPrefix = (prefix, text = '') => {
+  if (prefix == null) return null;
+  if (prefix instanceof RegExp) {
+    const match = resetRegex(prefix).exec(text);
+    return match && match.index === 0 ? [match, prefix] : null;
+  }
+  if (Array.isArray(prefix)) {
+    for (const item of prefix) {
+      const match = execPrefix(item, text);
+      if (match) return match;
+    }
+    return null;
+  }
+  if (typeof prefix === 'string') {
+    const regex = new RegExp('^' + str2Regex(prefix));
+    const match = regex.exec(text);
+    return match ? [match, regex] : null;
+  }
+  return null;
+};
+const commandAccepts = (prefixCommand, command) => {
+  if (!prefixCommand) return false;
+  if (prefixCommand instanceof RegExp) return resetRegex(prefixCommand).test(command);
+  if (Array.isArray(prefixCommand)) return prefixCommand.some((entry) => entry instanceof RegExp ? resetRegex(entry).test(command) : String(entry).toLowerCase() === command);
+  if (typeof prefixCommand === 'string') return prefixCommand.toLowerCase() === command;
+  return false;
+};
+
 async function handlePluginError(conn, m, error, extra = {}) {
   if (isUsageError(error)) {
     if (canSend(conn)) await m.reply(usageText(error));
@@ -223,26 +261,10 @@ async function handleMessage(chatUpdate) {
         }
       }
 
-      const str2Regex = (str) => str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
-      const customPrefix = plugin.customPrefix ?? plugin.costumPrefix;
-      const _prefix = customPrefix
-        ? customPrefix
-        : this.prefix
-        ? this.prefix
-        : global.prefix;
-
-      const match = (
-        _prefix instanceof RegExp
-          ? [[_prefix.exec(m.text), _prefix]]
-          : Array.isArray(_prefix)
-          ? _prefix.map((p) => {
-              const re = p instanceof RegExp ? p : new RegExp(str2Regex(p));
-              return [re.exec(m.text), re];
-            })
-          : typeof _prefix === 'string'
-          ? [[new RegExp(str2Regex(_prefix)).exec(m.text), new RegExp(str2Regex(_prefix))]]
-          : [[[], new RegExp()]]
-      ).find((p) => p[1]);
+      const customPrefix = resolveCustomPrefix(plugin);
+      const hasCustomPrefix = customPrefix != null;
+      const _prefix = hasCustomPrefix ? customPrefix : (this.prefix || global.prefix);
+      const match = execPrefix(_prefix, m.text);
 
       /* .before() – pre-command hook */
       if (typeof plugin.before === 'function') {
@@ -261,35 +283,33 @@ async function handleMessage(chatUpdate) {
       }
 
       if (typeof plugin !== 'function') continue;
-      if (!match) continue;
-      if (customPrefix && !match[0]) continue;
+      if (!match?.[0]) continue;
 
-      const result =
-        ((global.opts?.multiprefix ?? true) && (match[0] || '')[0]) ||
-        ((global.opts?.noprefix ?? false) ? null : (match[0] || '')[0]);
+      const result = (match[0] || '')[0] || '';
+      if (!hasCustomPrefix && !result) continue;
       usedPrefix = result;
 
-      let noPrefix;
-      if (isOwner) {
-        noPrefix = !result ? m.text : m.text.replace(result, '');
-      } else {
-        noPrefix = !result ? '' : m.text.replace(result, '').trim();
+      const noPrefix = result ? m.text.slice(result.length).trim() : m.text.trim();
+      const parts = noPrefix.split(/\s+/).filter(Boolean);
+      let [command, ...args] = parts;
+      let _args = parts.slice(1);
+      let text = _args.join(' ');
+
+      if (hasCustomPrefix) {
+        const capturedCommand = (match[0] || []).slice(1).find(Boolean);
+        command = capturedCommand || command || '';
+        args = parts;
+        _args = parts;
+        text = noPrefix;
       }
 
-      let [command, ...args] = noPrefix.trim().split(/\s+/).filter(Boolean);
       args    = args || [];
-      const _args = noPrefix.trim().split(/\s+/).slice(1);
-      const text  = _args.join(' ');
-      command     = (command || '').toLowerCase();
+      command = (command || '').toLowerCase();
       const fail  = plugin.fail || global.dfail;
 
       const prefixCommand = plugin.command;
-      const isAccept =
-        (prefixCommand instanceof RegExp && prefixCommand.test(command)) ||
-        (Array.isArray(prefixCommand) && prefixCommand.some((c) =>
-          c instanceof RegExp ? c.test(command) : c === command
-        )) ||
-        (typeof prefixCommand === 'string' && prefixCommand === command);
+      const isAccept = commandAccepts(prefixCommand, command);
+
 
       m.prefix   = !!result;
       usedPrefix = !result ? '' : result;

@@ -15,4 +15,18 @@ const handler = async (m, { args, text }) => {
 handler.help    = ['translate <lang> <teks>'];
 handler.tags    = ['tools'];
 handler.command = /^(translate|tr)$/i;
+handler.description = 'Menerjemahkan teks ke bahasa tujuan seperti id, en, ja, atau bahasa lain.';
+handler.ai = {
+  tool: true,
+  name: 'translate_text',
+  description: handler.description,
+  permissions: ['user', 'premium', 'owner'],
+  risk: 'low',
+  parameters: {
+    lang: { type: 'string', description: 'Kode bahasa tujuan, contoh en atau id' },
+    text: { type: 'string', description: 'Teks yang ingin diterjemahkan', required: true },
+  },
+  examples: ['terjemahkan ke bahasa inggris: aku sedang belajar'],
+};
+
 export default handler;

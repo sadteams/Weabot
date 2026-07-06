@@ -87,4 +87,15 @@ let handler = async (m, { conn }) => {
 handler.help = ['ping', 'speed']
 handler.tags = ['info', 'tools']
 handler.command = /^(ping|speed|info)$/i
-export default handler
+handler.description = 'Menampilkan status runtime bot, latency, penggunaan RAM, CPU, dan jumlah chat.';
+handler.ai = {
+  tool: true,
+  name: 'bot_status',
+  description: handler.description,
+  permissions: ['user', 'premium', 'owner'],
+  risk: 'low',
+  parameters: {},
+  examples: ['cek status bot'],
+};
+
+export default handler;

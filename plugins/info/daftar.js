@@ -19,4 +19,6 @@ handler.help     = ['daftar nama.umur'];
 handler.tags     = ['info'];
 handler.command  = /^(daftar|register|reg)$/i;
 handler.register = false;
+handler.description = "Mendaftarkan user ke database bot menggunakan format nama dan umur.";
+
 export default handler;

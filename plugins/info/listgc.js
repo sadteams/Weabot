@@ -16,4 +16,6 @@ handler.help    = ['listgc'];
 handler.tags    = ['owner'];
 handler.command = /^(listgc|listgroup|listgrup)$/i;
 handler.owner   = true;
+handler.description = "Menampilkan daftar grup yang sedang diikuti bot untuk owner.";
+
 export default handler;

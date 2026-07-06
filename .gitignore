@@ -2,4 +2,7 @@ node_modules/
 session/
 database/
 tmp/
+agents/
 .env
+creds.json
+store.json

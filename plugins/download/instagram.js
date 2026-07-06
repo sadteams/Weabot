@@ -69,7 +69,13 @@ const handler = async (m, { text, usedPrefix, command, conn }) => {
             await conn.sendMessage(m.chat, {
               document: { url: downloadUrl },
               mimetype: isVideo ? 'video/mp4' : 'image/jpeg',
-              fileName: `ig_${meta?.shortcode || 'media'}_${mediaCount}.${isVideo ? 'mp4' : 'jpg'}`
+              fileName: `ig_${meta?.shortcode || 'media'}_${mediaCount}.${isVideo ? 'mp4' : 'jpg'}`,
+              caption: `*Instagram Media* ✅`,
+              fallbackText: [
+                '*Media terlalu besar untuk diupload stabil sebagai dokumen.*',
+                'Silakan unduh langsung dari link ini:',
+                downloadUrl,
+              ].join('\n'),
             }, { quoted: m });
           } catch (docErr) {
             await m.reply(downloadUrl);
@@ -92,5 +98,18 @@ handler.help = ['instagram <url>'];
 handler.tags = ['downloader'];
 handler.command = /^(ig|instagram|igdl|igdownload)$/i;
 handler.limit = 2;
+
+handler.description = 'Mengunduh video atau foto dari link Instagram reel, post, atau media publik.';
+handler.ai = {
+  tool: true,
+  name: 'download_instagram',
+  description: handler.description,
+  permissions: ['user', 'premium', 'owner'],
+  risk: 'low',
+  parameters: {
+    url: { type: 'string', description: 'URL Instagram reel/post/story publik', required: true },
+  },
+  examples: ['unduh video instagram https://www.instagram.com/reel/xxxxx'],
+};
 
 export default handler;

@@ -14,4 +14,6 @@ handler.help    = ['addprem @user [hari]'];
 handler.tags    = ['owner'];
 handler.command = /^(addprem|addpremium)$/i;
 handler.owner   = true;
+handler.description = "Menambahkan status premium kepada user dengan durasi tertentu.";
+
 export default handler;

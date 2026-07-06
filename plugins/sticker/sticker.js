@@ -28,4 +28,18 @@ handler.help = ['sticker <pack|author>'];
 handler.tags = ['sticker'];
 handler.command = /^(sticker|s|stic)$/i;
 
+handler.description = 'Membuat sticker dari gambar atau video yang direply user.';
+handler.ai = {
+  tool: true,
+  name: 'make_sticker',
+  description: handler.description,
+  permissions: ['user', 'premium', 'owner'],
+  risk: 'low',
+  parameters: {
+    pack: { type: 'string', description: 'Nama pack sticker opsional' },
+    author: { type: 'string', description: 'Nama author sticker opsional' },
+  },
+  examples: ['jadikan gambar ini sticker'],
+};
+
 export default handler;

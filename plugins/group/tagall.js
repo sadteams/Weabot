@@ -10,4 +10,6 @@ handler.help    = ['tagall'];
 handler.tags    = ['group'];
 handler.command = /^(tagall|tgall|tag)$/i;
 handler.group   = true;
+handler.description = "Mention semua member grup dengan pesan opsional.";
+
 export default handler;

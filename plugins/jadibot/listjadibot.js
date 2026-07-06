@@ -12,4 +12,6 @@ handler.help = ['listjadibot'];
 handler.tags = ['jadibot'];
 handler.command = /^listjadibot$/i;
 
+handler.description = "Menampilkan daftar session jadibot milik user atau semua session untuk owner.";
+
 export default handler;

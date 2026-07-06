@@ -13,4 +13,6 @@ handler.all = async function (m) {
   }
 };
 
+handler.description = "Menangani panggilan masuk ke nomor bot dengan memberi peringatan dan memblokir penelepon.";
+
 export default handler;

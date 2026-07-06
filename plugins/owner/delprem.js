@@ -12,4 +12,6 @@ handler.help    = ['delprem @user'];
 handler.tags    = ['owner'];
 handler.command = /^(delprem|delpremium|unprem)$/i;
 handler.owner   = true;
+handler.description = "Menghapus status premium dari user.";
+
 export default handler;

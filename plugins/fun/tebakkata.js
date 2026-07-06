@@ -49,4 +49,8 @@ handler.all = async function (m) {
 handler.help    = ['tebakkata'];
 handler.tags    = ['game'];
 handler.command = /^(tebakkata|tebak)$/i;
+handler.description = "Memulai permainan tebak kata dengan soal acak dan hadiah EXP jika jawaban benar.";
+
+handler.disabled = true;
+
 export default handler;

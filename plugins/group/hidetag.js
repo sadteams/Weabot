@@ -29,4 +29,6 @@ handler.command = /^(hidetag|hio|tag)$/i;
 handler.group = true;
 handler.admin = true;
 
+handler.description = "Mengirim pesan atau media ke grup dengan mention tersembunyi ke semua member.";
+
 export default handler;

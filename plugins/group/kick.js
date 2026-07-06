@@ -46,4 +46,6 @@ handler.tags     = ['group'];
 handler.command  = /^(kick|remove|tendang)$/i;
 handler.group    = true;
 handler.botAdmin = true;
+handler.description = "Mengeluarkan member dari grup melalui mention atau reply.";
+
 export default handler;

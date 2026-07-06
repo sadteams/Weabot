@@ -64,4 +64,6 @@ handler.tags = ['owner'];
 handler.command = /^(backupsc|backup)$/i;
 handler.rowner = true;
 
+handler.description = "Membuat backup source code bot untuk real owner.";
+
 export default handler;

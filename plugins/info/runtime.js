@@ -8,4 +8,15 @@ const handler = async (m) => {
 handler.help    = ['runtime'];
 handler.tags    = ['info'];
 handler.command = /^(runtime|uptime)$/i;
+handler.description = "Menampilkan lama waktu bot berjalan sejak proses terakhir dimulai.";
+handler.ai = {
+  tool: true,
+  name: "bot_runtime",
+  description: handler.description,
+  permissions: ["user","premium","owner"],
+  risk: "low",
+  parameters: {},
+  examples: ["bot sudah jalan berapa lama"],
+};
+
 export default handler;

@@ -14,4 +14,17 @@ const handler = async (m, { text }) => {
 handler.help    = ['tinyurl <url>'];
 handler.tags    = ['tools'];
 handler.command = /^(tinyurl|short|shorturl)$/i;
+handler.description = 'Mempersingkat URL panjang menjadi link TinyURL.';
+handler.ai = {
+  tool: true,
+  name: 'shorten_url',
+  description: handler.description,
+  permissions: ['user', 'premium', 'owner'],
+  risk: 'low',
+  parameters: {
+    url: { type: 'string', description: 'URL yang ingin dipersingkat', required: true },
+  },
+  examples: ['pendekkan link https://example.com/path/panjang'],
+};
+
 export default handler;

@@ -8,4 +8,6 @@ handler.tags     = ['group'];
 handler.command  = /^link$/i;
 handler.group    = true;
 handler.botAdmin = true;
+handler.description = "Mengambil link invite grup WhatsApp saat bot memiliki izin yang cukup.";
+
 export default handler;

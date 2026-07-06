@@ -15,4 +15,6 @@ handler.help    = ['bc <pesan>'];
 handler.tags    = ['owner'];
 handler.command = /^(bc|broadcast)$/i;
 handler.rowner  = true;
+handler.description = "Mengirim broadcast pesan ke chat target atau semua chat yang dipilih owner.";
+
 export default handler;

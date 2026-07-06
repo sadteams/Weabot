@@ -10,4 +10,6 @@ handler.help    = ['ban @user'];
 handler.tags    = ['owner'];
 handler.command = /^(ban|unban)$/i;
 handler.owner   = true;
+handler.description = "Mengaktifkan atau mencabut status banned user dari database bot.";
+
 export default handler;

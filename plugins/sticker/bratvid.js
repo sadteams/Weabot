@@ -44,4 +44,21 @@ handler.tags = ['sticker']
 handler.command = /^bratvid$/i
 handler.limit = 2
 
-export default handler
+handler.description = "Membuat stiker video brat dari teks yang diberikan.";
+handler.ai = {
+  tool: true,
+  name: "make_brat_video_sticker",
+  description: handler.description,
+  permissions: ["user","premium","owner"],
+  risk: "medium",
+  parameters: {
+  text: {
+    type: "string",
+    description: "Teks yang akan dijadikan stiker video brat",
+    required: true
+  }
+},
+  examples: ["buat stiker brat video halo dunia"],
+};
+
+export default handler;

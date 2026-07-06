@@ -18,4 +18,15 @@ const handler = async (m, { conn }) => {
 handler.help    = ['ocr'];
 handler.tags    = ['tools'];
 handler.command = /^(ocr|readtext)$/i;
+handler.description = 'Membaca teks dari gambar yang dikirim atau direply menggunakan OCR.';
+handler.ai = {
+  tool: true,
+  name: 'read_image_text',
+  description: handler.description,
+  permissions: ['user', 'premium', 'owner'],
+  risk: 'low',
+  parameters: {},
+  examples: ['baca teks pada gambar ini'],
+};
+
 export default handler;

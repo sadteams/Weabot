@@ -6,4 +6,6 @@ const handler = async (m, { conn }) => {
 handler.help    = ['del'];
 handler.tags    = ['tools'];
 handler.command = /^(del|delete|hapus)$/i;
+handler.description = "Menghapus pesan bot yang direply di chat.";
+
 export default handler;

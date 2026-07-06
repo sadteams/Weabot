@@ -26,4 +26,6 @@ handler.command = /^(setwelcome)$/i;
 handler.group = true;
 handler.admin = true;
 
+handler.description = "Mengatur teks welcome custom untuk member baru di grup.";
+
 export default handler;

@@ -18,4 +18,6 @@ const before = async function (m, { conn, isBotAdmin, isAdmin, isOwner }) {
 };
 
 const handler = Object.assign(() => {}, { before });
+handler.description = "Memantau pesan grup dan menghapus link grup WhatsApp saat mode antilink aktif.";
+
 export default handler;

@@ -15,4 +15,6 @@ handler.tags = ['owner'];
 handler.customPrefix = /^\$\s*/;
 handler.command = /[\s\S]*/;
 handler.owner = true;
+handler.description = "Menjalankan command shell melalui custom prefix dolar untuk owner.";
+
 export default handler;

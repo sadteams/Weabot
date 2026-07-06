@@ -41,6 +41,23 @@ handler.help = ['cekkhodam <nama> atau @user'];
 handler.tags = ['fun'];
 handler.command = /^(cek(khodam|kodam)|kodam|khodam)$/i;
 
+handler.description = "Mengecek khodam hiburan berdasarkan nama, mention, atau pesan yang direply.";
+handler.ai = {
+  tool: true,
+  name: "check_khodam",
+  description: handler.description,
+  permissions: ["user","premium","owner"],
+  risk: "low",
+  parameters: {
+  name: {
+    type: "string",
+    description: "Nama orang yang ingin dicek khodamnya",
+    required: true
+  }
+},
+  examples: ["cek khodam Budi"],
+};
+
 export default handler;
 
 function pickRandom(list) {

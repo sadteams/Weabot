@@ -28,4 +28,6 @@ handler.command = /^(antilink)$/i;
 handler.group = true;
 handler.admin = true;
 
+handler.description = "Mengaktifkan atau menonaktifkan perlindungan antilink grup WhatsApp.";
+
 export default handler;

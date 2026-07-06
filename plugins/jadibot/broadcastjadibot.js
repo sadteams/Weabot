@@ -19,4 +19,6 @@ handler.tags = ['jadibot'];
 handler.command = /^(broadcastjadibot|bcjadibot)$/i;
 handler.owner = true;
 
+handler.description = "Mengirim broadcast kepada user atau session jadibot yang terhubung.";
+
 export default handler;

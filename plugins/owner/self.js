@@ -6,4 +6,6 @@ handler.help    = ['self'];
 handler.tags    = ['owner'];
 handler.command = /^(self|public)$/i;
 handler.rowner  = true;
+handler.description = "Mengubah mode bot antara self mode dan public mode.";
+
 export default handler;

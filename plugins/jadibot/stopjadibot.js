@@ -10,4 +10,6 @@ handler.help = ['stopjadibot'];
 handler.tags = ['jadibot'];
 handler.command = /^stopjadibot$/i;
 
+handler.description = "Menghentikan session jadibot milik user atau target tertentu oleh owner.";
+
 export default handler;

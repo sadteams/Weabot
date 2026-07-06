@@ -11,4 +11,6 @@ handler.tags = ['owner']
 handler.command = /^sf$/i
 
 handler.owner = true
-export default handler
+handler.description = "Mengirim atau meneruskan pesan sebagai bot untuk owner.";
+
+export default handler;

@@ -160,4 +160,6 @@ handler.tags = ['jadibot'];
 handler.command = /^jadibot$/i;
 handler.limit = true;
 
+handler.description = "Memulai flow interaktif jadibot dengan pilihan QR atau pairing code.";
+
 export default handler;

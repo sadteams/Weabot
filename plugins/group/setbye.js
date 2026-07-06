@@ -26,4 +26,6 @@ handler.command = /^(setbye)$/i;
 handler.group = true;
 handler.admin = true;
 
+handler.description = "Mengatur teks goodbye custom untuk member yang keluar dari grup.";
+
 export default handler;

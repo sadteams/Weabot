@@ -34,4 +34,15 @@ const handler = async (m, { conn }) => {
 handler.help    = ['profile [@user]'];
 handler.tags    = ['info'];
 handler.command = /^(profile|profil|me)$/i;
+handler.description = 'Menampilkan profil user, status premium, limit, level, dan data dasar pengguna.';
+handler.ai = {
+  tool: true,
+  name: 'user_profile',
+  description: handler.description,
+  permissions: ['user', 'premium', 'owner'],
+  risk: 'low',
+  parameters: {},
+  examples: ['lihat profil saya'],
+};
+
 export default handler;

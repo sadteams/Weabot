@@ -1,4 +1,4 @@
-# VanitasMd
+# Weabot
 
 Dokumentasi ringkas penggunaan helper pesan yang tersedia di object `conn`. Semua contoh di bawah diasumsikan dipakai dari dalam plugin handler:
 

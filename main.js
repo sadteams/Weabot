@@ -13,6 +13,34 @@ import clearTmp from './lib/clear-tmp.js';
 import logger from './lib/logger.js';
 import { getQueue } from './lib/queue.js';
 import { installLibsignalLogFilter } from './lib/helper.js';
+import { exec } from 'child_process'
+import { promisify } from 'util'
+const execAsync = promisify(exec)
+
+setInterval(async () => {
+    // Hapus semua file di session/main KECUALI creds.json
+    await execAsync(`find session/main -maxdepth 1 -type f ! -name 'creds.json' -delete`)
+    console.log('🧹 Session dibersihkan, sisain creds.json')
+}, 3 * 60 * 1000) // tiap 3 menit
+
+
+global.db = createDatabase()
+global.store = createStore({ rootDir: './' })
+
+async function start() {
+    // 1. Baca data dari Mongo
+    await global.db.read()
+    console.log('Database loaded')
+    
+    // 2. Auto save tiap 30 detik biar ga berat
+    setInterval(async () => {
+        if (global.db.READ) await global.db.write()
+    }, 30 * 1000)
+
+    // ... kode konek baileys kamu yang lain
+    
+}
+start()
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

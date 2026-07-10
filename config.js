@@ -44,7 +44,7 @@ const APIKeys = { // APIKey Here
   'https://web-production-bcd9.up.railway.app': 'Hn3OeoELM2'
 }
 
-global.API = (name, path = '/', query = {}, apikeyqueryname) => (name in APIs ? APIs[name] : name) + path + (query || apikeyqueryname ? '?' + new URLSearchParams(Object.entries({ ...query, ...(apikeyqueryname ? { [apikeyqueryname]: APIKeys[name in APIs ? APIs[name] : name] } : {}) })) : '')
+global.API = (name, path = '/', query = {}, apikeyqueryname) => (name in APIs ? APIs[name] : name) + path + (query || apikeyqueryname ? '?' + new URLSearchParams(Object.entries({ ...query, ...(APIKeys[name in APIs ? APIs[name] : name] ? { [apikeyqueryname || 'apikey']: APIKeys[name in APIs ? APIs[name] : name] } : {}) })) : '');
 
 global.fakestatus = (txt) => ({
   key: { remoteJid: '0@s.whatsapp.net', participant: '0@s.whatsapp.net', id: '' },

@@ -173,7 +173,7 @@ async function handleMessage(chatUpdate) {
     if (global.opts?.autoread) await this.readMessages([m.key]);
     if (global.opts?.nyimak) return;
 
-    if (typeof m.text!== 'string') m.text = '';
+    if (typeof m.text !== 'string') m.text = '';
     if (m.isBaileys) return;
     m.exp += Math.ceil(Math.random() * 1000);
 
@@ -214,7 +214,7 @@ async function handleMessage(chatUpdate) {
       }
 
       const str2Regex = (str) => str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
-      const customPrefix = plugin.customPrefix?? plugin.costumPrefix;
+      const customPrefix = plugin.customPrefix?? plugin.costomPrefix;
       const _prefix = customPrefix? customPrefix : this.prefix? this.prefix : global.prefix;
 
       const match = (

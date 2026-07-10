@@ -84,7 +84,7 @@ let handler = async (m, { conn }) => {
 
   await m.reply(text)
 }
-handler.help = ['ping', 'speed']
+handler.help = ['ping']
 handler.tags = ['info', 'tools']
-handler.command = /^(ping|speed|info)$/i
+handler.command = /^(ping|info)$/i
 export default handler

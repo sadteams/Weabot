@@ -36,7 +36,7 @@
     "pino": "^9.6.0",
     "qrcode": "^1.5.4",
     "qrcode-terminal": "^0.12.0",
-    "sharp": "^0.33.0",
+    "sharp": "^0.35.0",
     "syntax-error": "^1.4.0",
     "wa-sticker-formatter": "^4.4.4",
     "yargs": "^17.7.2",
